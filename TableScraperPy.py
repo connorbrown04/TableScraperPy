@@ -29,17 +29,18 @@ dictionary = json.loads(body) #convert body text to dictionary
 df = pd.DataFrame(dictionary) #create dataframe of dictionary
 
 df2 = pd.DataFrame()
-for value in df['contractQuote']: # filter out unneccessary info and add capture date
+for value in df['contractQuote']: # filter out unneccessary info
     if (str(value) == "nan"): break
     subDF = pd.DataFrame(value, index=[0])
     df2 = pd.concat([df2, subDF])
 df = df2
-df["captureTime"] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+df["captureTime"] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') #add capture date
 
 with open("LastCapture.html", "w", encoding="utf-8") as file: #create html file
     file.write(df2.to_html())
 
-shutil.copy("LastCapture.html", "Archive\\Capture" + str(datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')) +".html")
+shutil.copy("LastCapture.html", "Archive/Capture" + str(datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')) +".html") #save to archive
 
 
 
